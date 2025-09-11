@@ -1,6 +1,6 @@
 # 百家号最新文章抓取器
 
-根据 `docs/BAIJIAHAO_SPIDER_REQUIREMENTS.md` 的前十部分实现的示例项目，用于从百家号作者主页抓取最新文章并保存。
+根据 `docs/BAIJIAHAO_SPIDER_REQUIREMENTS.md` 的前10个小章节实现的示例项目，用于从百家号作者主页抓取最新文章并保存。
 
 ## 快速开始
 
