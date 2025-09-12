@@ -1,0 +1,28 @@
+request:
+  timeout: 15
+  retry: 3
+  backoff: 1.5
+  random_ua: true
+  headers:
+    Accept-Language: zh-CN,zh;q=0.9
+  proxies:
+    http: ""
+    https: ""
+
+throttle:
+  min_delay: 1.0
+  max_delay: 3.0
+  per_author_limit: 5
+
+storage:
+  save_json: true
+  save_text: true
+  save_images: false
+  sqlite: true
+
+scheduler:
+  enabled: false
+  cron: "*/30 * * * *"
+
+debug:
+  save_raw_html: false
