@@ -1,3 +1,5 @@
+"""HTML parsing utilities for Baijiahao articles."""
+
 from __future__ import annotations
 
 import re
@@ -13,6 +15,8 @@ except Exception:  # pragma: no cover - fallback when bs4 is unavailable
 
 @dataclass
 class Article:
+    """Simple container for parsed article data."""
+
     article_id: str
     url: str
     title: str
@@ -28,7 +32,7 @@ ARTICLE_ID_RE = re.compile(r"id=(\d+)")
 
 
 def parse_article_list(html: str) -> List[str]:
-    """Parse author page HTML to extract article URLs."""
+    """Parse an author homepage to extract article URLs."""
     if BeautifulSoup:
         soup = BeautifulSoup(html, "lxml")
         return [
@@ -39,6 +43,7 @@ def parse_article_list(html: str) -> List[str]:
 
 
 def parse_article(html: str, url: str, author_id: str, author_name: str) -> Article:
+    """Parse article page HTML into an :class:`Article` object."""
     if BeautifulSoup:
         soup = BeautifulSoup(html, "lxml")
         title = soup.select_one("h1").get_text(strip=True)

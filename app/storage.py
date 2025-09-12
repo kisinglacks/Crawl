@@ -49,6 +49,7 @@ class Storage:
                 author_id TEXT,
                 author_name TEXT,
                 publish_time TEXT,
+                content_html TEXT,
                 content_text TEXT,
                 created_at TEXT,
                 updated_at TEXT
@@ -72,8 +73,8 @@ class Storage:
                 """
                 INSERT OR IGNORE INTO articles (
                     article_id, url, title, author_id, author_name, publish_time,
-                    content_text, created_at, updated_at
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    content_html, content_text, created_at, updated_at
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """,
                 (
                     article.article_id,
@@ -82,6 +83,7 @@ class Storage:
                     article.author_id,
                     article.author_name,
                     article.publish_time.isoformat(),
+                    article.content_html,
                     article.content_text,
                     now,
                     now,

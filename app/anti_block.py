@@ -1,3 +1,5 @@
+"""Helpers for polite HTTP requests with retry and throttling."""
+
 from typing import Any, Dict, Optional
 
 import requests
@@ -15,10 +17,16 @@ from tenacity import retry, stop_after_attempt, wait_exponential
 from . import utils
 
 
-def get_session(headers: Optional[Dict[str, str]] = None) -> requests.Session:
+def get_session(
+    headers: Optional[Dict[str, str]] = None,
+    proxies: Optional[Dict[str, str]] = None,
+) -> requests.Session:
+    """Return a `requests.Session` preloaded with headers, proxies and UA."""
     session = requests.Session()
     if headers:
         session.headers.update(headers)
+    if proxies:
+        session.proxies.update(proxies)
     session.headers.setdefault("User-Agent", utils.random_ua())
     return session
 
@@ -30,6 +38,7 @@ def request_with_retry(
     params: Optional[Dict[str, Any]] = None,
     **kwargs: Any,
 ) -> requests.Response:
+    """Perform an HTTP request with retries and exponential backoff."""
     retry_times = kwargs.pop("retry", 3)
     backoff = kwargs.pop("backoff", 1.5)
     timeout = kwargs.pop("timeout", 15)

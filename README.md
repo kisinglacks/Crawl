@@ -11,6 +11,8 @@ python -m app.main run --limit-per-author 5
 
 默认读取 `data/authors.txt` 中的作者主页列表，并将结果保存到 `output/` 目录和 `storage/baijiahao.db`。
 
+> 请仅在遵守目标站点条款和当地法律的前提下使用本项目，合理控制抓取频率。
+
 更多用法参见需求文档或执行：
 
 ```bash
