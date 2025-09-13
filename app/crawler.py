@@ -3,7 +3,7 @@ from typing import Dict, List
 
 from loguru import logger
 
-from . import anti_block, parser, utils, storage
+from . import parser, utils, storage, browser
 
 AUTHOR_ID_RE = re.compile(r"(\d+)$")
 
@@ -15,36 +15,23 @@ def extract_author_id(url: str) -> str:
 
 def crawl_author(author_url: str, cfg: Dict, store: storage.Storage) -> List[parser.Article]:
     author_id = extract_author_id(author_url)
-    session = anti_block.get_session(cfg.get("request", {}).get("headers"))
-    resp = anti_block.request_with_retry(
-        session,
-        author_url,
-        timeout=cfg.get("request", {}).get("timeout", 15),
-        retry=cfg.get("request", {}).get("retry", 3),
-        backoff=cfg.get("request", {}).get("backoff", 1.5),
-        proxies=cfg.get("request", {}).get("proxies"),
-    )
-    links = parser.parse_article_list(resp.text)
+    br = browser.create_driver(cfg.get("browser", {}))
+    br.get(author_url)
+    links = parser.parse_article_list(br.page_source)
     articles = []
     limit = cfg.get("throttle", {}).get("per_author_limit", 5)
     for url in links[:limit]:
         if store.article_exists(parser.ARTICLE_ID_RE.search(url).group(1)):
             logger.info("existing article detected, stop further fetching")
             break
-        art_resp = anti_block.request_with_retry(
-            session,
-            url,
-            timeout=cfg.get("request", {}).get("timeout", 15),
-            retry=cfg.get("request", {}).get("retry", 3),
-            backoff=cfg.get("request", {}).get("backoff", 1.5),
-            proxies=cfg.get("request", {}).get("proxies"),
-        )
-        article = parser.parse_article(art_resp.text, url, author_id, author_id)
+        br.get(url)
+        article = parser.parse_article(br.page_source, url, author_id, author_id)
         articles.append(article)
         utils.random_delay(
             cfg.get("throttle", {}).get("min_delay", 1.0),
             cfg.get("throttle", {}).get("max_delay", 3.0),
         )
+    br.quit()
     return articles
 
 

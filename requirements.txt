@@ -6,3 +6,4 @@ loguru
 pyyaml
 apscheduler
 pytest
+selenium

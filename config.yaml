@@ -9,6 +9,12 @@ request:
     http: ""
     https: ""
 
+browser:
+  headless: true
+  use_proxy: false
+  proxy_file: data/proxies.txt
+  user_agent: ""
+
 throttle:
   min_delay: 1.0
   max_delay: 3.0
