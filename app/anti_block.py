@@ -24,11 +24,12 @@ def request_with_retry(
 ) -> requests.Response:
     retry_times = kwargs.pop("retry", 3)
     backoff = kwargs.pop("backoff", 1.5)
+    timeout = kwargs.pop("timeout", 15)
 
     @retry(stop=stop_after_attempt(retry_times), wait=wait_exponential(multiplier=backoff))
     def _request() -> requests.Response:
         logger.debug(f"requesting {url}")
-        resp = session.request(method, url, params=params, timeout=kwargs.get("timeout", 15), **kwargs)
+        resp = session.request(method, url, params=params, timeout=timeout, **kwargs)
         resp.raise_for_status()
         return resp
 
