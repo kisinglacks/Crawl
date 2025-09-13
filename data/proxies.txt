@@ -1,0 +1,9 @@
+# Example proxy entries
+# ip:port
+127.0.0.1:8080
+# with scheme
+http://127.0.0.1:8081
+# with auth
+user:pass@127.0.0.1:8082
+# full url with https
+https://user:pass@127.0.0.1:8083
