@@ -31,6 +31,27 @@ def load_authors(file_path: str) -> List[str]:
     return authors
 
 
+def load_proxies(file_path: str) -> List[str]:
+    """Read proxy addresses from a file.
+
+    Supports entries like ``ip:port``, ``http://ip:port`` or
+    ``user:pass@ip:port``. Lines starting with ``#`` are ignored. If the
+    scheme is missing, ``http://`` is assumed.
+    """
+    path = Path(file_path)
+    proxies = []
+    if not path.exists():
+        return proxies
+    for line in path.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if not line or line.startswith("#"):
+            continue
+        if "://" not in line:
+            line = f"http://{line}"
+        proxies.append(line)
+    return proxies
+
+
 def md5(text: str) -> str:
     return hashlib.md5(text.encode("utf-8")).hexdigest()
 
