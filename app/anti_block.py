@@ -28,7 +28,7 @@ def request_with_retry(
 
     @retry(stop=stop_after_attempt(retry_times), wait=wait_exponential(multiplier=backoff))
     def _request() -> requests.Response:
-        logger.debug(f"requesting {url}")
+        logger.debug("requesting {}", url)
         resp = session.request(method, url, params=params, timeout=timeout, **kwargs)
         resp.raise_for_status()
         return resp

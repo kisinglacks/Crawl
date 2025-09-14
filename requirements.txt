@@ -6,4 +6,5 @@ loguru
 pyyaml
 apscheduler
 pytest
-selenium
+selenium>=4
+
