@@ -14,6 +14,7 @@ browser:
   use_proxy: false
   proxy_file: data/proxies.txt
   user_agent: ""
+  page_load_timeout: 30
 
 throttle:
   min_delay: 1.0

@@ -37,6 +37,10 @@ def crawl_author(author_url: str, cfg: Dict, store: storage.Storage) -> List[par
 
 def crawl_from_file(file_path: str, cfg: Dict) -> None:
     authors = utils.load_authors(file_path)
+    if not authors:
+        logger.warning(f"no authors found in {file_path}")
+        return
+
     store = storage.Storage(
         save_json=cfg.get("storage", {}).get("save_json", True),
         save_text=cfg.get("storage", {}).get("save_text", True),
@@ -44,8 +48,10 @@ def crawl_from_file(file_path: str, cfg: Dict) -> None:
     )
     for author_url in authors:
         try:
+            logger.info(f"crawling {author_url}")
             arts = crawl_author(author_url, cfg, store)
             storage.save_articles(arts, store)
+            logger.info(f"saved {len(arts)} articles for {author_url}")
         except Exception as exc:  # noqa: BLE001
             logger.error(f"error crawling {author_url}: {exc}")
     store.close()
