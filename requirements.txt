@@ -5,6 +5,4 @@ tenacity
 loguru
 pyyaml
 apscheduler
-pytest
 selenium>=4
-
