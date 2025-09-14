@@ -32,4 +32,6 @@ def create_driver(cfg: Dict) -> webdriver.Chrome:
             proxy = random.choice(proxies)
             options.add_argument(f"--proxy-server={proxy}")
     driver = webdriver.Chrome(options=options)
+    timeout = cfg.get("page_load_timeout", 30)
+    driver.set_page_load_timeout(timeout)
     return driver
